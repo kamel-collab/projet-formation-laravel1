@@ -14,9 +14,8 @@ class FilmController extends Controller
      */
     public function index()
     {
-        $films=Film::all();
-        dd($films);
-        //retourner la vue index avec la list des film
+        $films = Film::all();
+        return view('index', compact('films'));
     }
 
     /**
@@ -48,7 +47,8 @@ class FilmController extends Controller
      */
     public function show($id)
     {
-        //
+        $film=Film::find($id);
+        return view('show', compact('film'));
     }
 
     /**

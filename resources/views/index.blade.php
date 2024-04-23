@@ -6,6 +6,7 @@
         </header>
         <div class="card-body">
 
+
             <table class="table is-hoverable">
                 <thead>
                     <tr>
@@ -17,6 +18,17 @@
                     </tr>
                 </thead>
                 <tbody>
+                    @foreach ($films as $f)
+                        <tr>
+                            <td> {{ $f->id }}</td>
+                            <td> {{ $f->title }} </td>
+                            <td><a class="btn btn-primary" href="{{route('films.show',$f->id)}}">Voir</a></td>
+                            <td><a class="btn btn-warning" href="">Modifier</a></td>
+                            <td><a class="btn btn-danger" href="">Supprimer</a></td>
+  
+                        </tr>
+                    @endforeach
+                </tbody>
 
             </table>
         </div>
