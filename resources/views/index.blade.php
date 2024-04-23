@@ -1,5 +1,9 @@
 @extends('template')
 @section('content')
+
+@if (session()->has('info'))
+    <div class="alert alert-success">{{session('info')}}</div>
+@endif
     <div class="card">
         <header class="card-header">
             <h3>Films</h3>
@@ -22,10 +26,17 @@
                         <tr>
                             <td> {{ $f->id }}</td>
                             <td> {{ $f->title }} </td>
-                            <td><a class="btn btn-primary" href="{{route('films.show',$f->id)}}">Voir</a></td>
+                            <td><a class="btn btn-primary" href="{{ route('films.show', $f->id) }}">Voir</a></td>
                             <td><a class="btn btn-warning" href="">Modifier</a></td>
-                            <td><a class="btn btn-danger" href="">Supprimer</a></td>
-  
+                            <td>
+                                <form action="{{ route('films.destroy', $f->id) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger">supprimer</button>
+                                </form>
+                            </td>
+
+
                         </tr>
                     @endforeach
                 </tbody>

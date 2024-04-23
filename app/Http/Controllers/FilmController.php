@@ -45,9 +45,9 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Film $film)
     {
-        $film=Film::find($id);
+       
         return view('show', compact('film'));
     }
 
@@ -80,8 +80,10 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Film $film)
     {
-        //
+       $film->delete();
+       return back()->with('info',"le film a bien étét supprimé");
+       
     }
 }
