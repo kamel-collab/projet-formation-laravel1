@@ -1,9 +1,9 @@
 @extends('template')
 @section('content')
-
-@if (session()->has('info'))
-    <div class="alert alert-success">{{session('info')}}</div>
-@endif
+    @if (session()->has('info'))
+        <div class="alert alert-success">{{ session('info') }}</div>
+    @endif
+    <a class="btn btn-primary m-3" href="{{ route('films.create') }}">ajouter</a>
     <div class="card">
         <header class="card-header">
             <h3>Films</h3>
