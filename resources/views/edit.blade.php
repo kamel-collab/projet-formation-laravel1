@@ -2,16 +2,17 @@
 @section('content')
     <div class="card">
         <header class="card-header">
-            <h4>Création d'un film</h4>
+            <h4>edit d'un film</h4>
         </header>
         <div class="card-body">
 
-            <form action="{{ route('films.store') }}" method="POST">
+            <form action="{{ route('films.update',$film->id) }}" method="POST">
                 @csrf
+                @method('put')
                 <div class="field">
                     <label class="label">Titre</label>
                     <div class="control">
-                        <input class="form-control" type="text" name="title" value="{{ old('title') }}"
+                        <input class="form-control" type="text" name="title" value="{{ old('title',$film->title) }}"
                             placeholder="Titre du film">
                     </div>
                     @error('title')
@@ -21,7 +22,7 @@
                 <div class="field">
                     <label class="label">Année de diffusion</label>
                     <div class="control">
-                        <input class="form-control" type="number" name="year" value="{{ old('year') }}" min="1950"
+                        <input class="form-control" type="number" name="year" value="{{ old('year',$film->year) }}" min="1950"
                             max="{{ date('Y') }}">
                     </div>
                     @error('year')
@@ -31,7 +32,7 @@
                 <div class="field">
                     <label class="label">Description</label>
                     <div class="control">
-                        <textarea class="form-control" name="description" placeholder="Description du film">{{ old('description') }}</textarea>
+                        <textarea class="form-control" name="description" placeholder="Description du film">{{ old('description',$film->description) }}</textarea>
                     </div>
                     @error('description')
                         <p class="text-danger">{{ $message }}</p>

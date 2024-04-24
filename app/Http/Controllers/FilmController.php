@@ -77,9 +77,16 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Film $film)
     {
-        //
+        $this->validate($request, [
+            'title' => ['required', 'string', 'max:100'],
+            'year' => ['required', 'numeric', 'min:1950', 'max:' . date('Y')],
+            'description' => ['required', 'string', 'max:500'],
+        ]);
+       
+        $film->update($request->all());
+        return redirect()->route('films.index')->with('info', 'Le film a bien été modifier');
     }
 
     /**
