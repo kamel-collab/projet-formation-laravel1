@@ -25,7 +25,7 @@ class FilmController extends Controller
      */
     public function create()
     {
-       return view('create');
+        return view('create');
     }
 
     /**
@@ -36,7 +36,15 @@ class FilmController extends Controller
      */
     public function store(Request $request)
     {
-       return 'ok';
+        $this->validate($request, [
+            'title' => ['required', 'string', 'max:100'],
+            'year' => ['required', 'numeric', 'min:1950', 'max:' . date('Y')],
+            'description' => ['required', 'string', 'max:500'],
+        ]);
+       
+        Film::create($request->all());
+        return redirect()->route('films.index')->with('info', 'Le film a bien été créé');
+
     }
 
     /**
@@ -47,7 +55,7 @@ class FilmController extends Controller
      */
     public function show(Film $film)
     {
-       
+
         return view('show', compact('film'));
     }
 
@@ -57,9 +65,9 @@ class FilmController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Film $film)
     {
-        //
+        return view('edit',compact('film'));
     }
 
     /**
@@ -82,8 +90,7 @@ class FilmController extends Controller
      */
     public function destroy(Film $film)
     {
-       $film->delete();
-       return back()->with('info',"le film a bien étét supprimé");
-       
+        $film->delete();
+        return back()->with('info', "le film a bien étét supprimé");
     }
 }

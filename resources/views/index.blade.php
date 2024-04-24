@@ -27,7 +27,7 @@
                             <td> {{ $f->id }}</td>
                             <td> {{ $f->title }} </td>
                             <td><a class="btn btn-primary" href="{{ route('films.show', $f->id) }}">Voir</a></td>
-                            <td><a class="btn btn-warning" href="">Modifier</a></td>
+                            <td><a class="btn btn-warning" href="{{ route('films.edit', $f->id) }}">Modifier</a></td>
                             <td>
                                 <form action="{{ route('films.destroy', $f->id) }}" method="POST">
                                     @csrf
