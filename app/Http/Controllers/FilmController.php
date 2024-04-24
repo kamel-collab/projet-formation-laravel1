@@ -13,10 +13,24 @@ class FilmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($slug=null)
     {
-        $films = Film::all();
-        return view('index', compact('films'));
+     
+
+        //le but depuis une categorie on cherche ma miste de c films
+        //1 selection de la categorie// oops on a pas le id donc on doit cherché vec le slug
+        // etape 1 ==Category::where('slug',$slug)->get()[0]
+        //etape 1== select le premier enregistrement de la requete  select * from categories where slug = $slug
+        // etape 1  == Category::where('slug',$slug)->first() car    ->get()[0] == ->first()
+        // une fois qu'on a recuperer la category on peut utiliser la methode films() creer dans le model Category
+        // Category::where('slug',$slug)->first()->films()->get() 
+        //elle retourne la liste des film de la categorie trouvé dans l'etape 1
+      $films= $slug  ? Category::where('slug',$slug)->first()->films()->get() : Film::all();
+
+
+ 
+        $categories=Category::all();
+        return view('index', compact('films','categories','slug'));
     }
 
     /**

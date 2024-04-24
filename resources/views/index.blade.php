@@ -4,6 +4,19 @@
         <div class="alert alert-success">{{ session('info') }}</div>
     @endif
     <a class="btn btn-primary m-3" href="{{ route('films.create') }}">ajouter</a>
+    <br>
+    <div class="select">
+        <select onchange="window.location.href=this.value" name="category_id" id="category_id">
+            <option value="{{ route('films.index') }}" @unless ($slug) selected @endunless>Toutes
+                catégories</option>
+
+            @foreach ($categories as $c)
+                <option value="{{ route('films.category', $c->slug) }}" {{ $c->slug == $slug ? 'selected' : '' }}>
+                    {{ $c->name }}</option>
+            @endforeach
+        </select>
+    </div>
+    <br>
     <div class="card">
         <header class="card-header">
             <h3>Films</h3>
