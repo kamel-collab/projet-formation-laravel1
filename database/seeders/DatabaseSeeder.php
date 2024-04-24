@@ -6,7 +6,8 @@ use App\Models\Category;
 use App\Models\Film;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
+//php artisan migrate:fresh
+//php artisan db:seed
 class DatabaseSeeder extends Seeder
 {
     /**

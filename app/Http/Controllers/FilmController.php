@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Film;
 use Illuminate\Http\Request;
 //php artisan make:controller FilmController --resource
@@ -25,7 +26,8 @@ class FilmController extends Controller
      */
     public function create()
     {
-        return view('create');
+        $categories=Category::all();
+        return view('create',compact('categories'));
     }
 
     /**
@@ -41,7 +43,7 @@ class FilmController extends Controller
             'year' => ['required', 'numeric', 'min:1950', 'max:' . date('Y')],
             'description' => ['required', 'string', 'max:500'],
         ]);
-       
+       //dd($request->all());
         Film::create($request->all());
         return redirect()->route('films.index')->with('info', 'Le film a bien été créé');
 
