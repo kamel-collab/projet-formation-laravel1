@@ -1,4 +1,4 @@
-@extends('template')
+@extends('layouts.app')
 @section('content')
     <div class="card">
         <header class="card-header">
@@ -13,6 +13,17 @@
                         <select name="category_id" id="category_id">
                             @foreach ($categories as $c)
                                 <option value="{{ $c->id }}">{{ $c->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
+                <div class="field">
+                    <label for="category_id">Actors</label>
+                    <div class="select">
+                        <select name="actors[]" id="" multiple>
+                            @foreach ($actors as $a)
+                                <option value="{{ $a->id }}">{{ $a->name }}</option>
                             @endforeach
                         </select>
                     </div>

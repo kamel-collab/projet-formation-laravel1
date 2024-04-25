@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actor;
 use App\Models\Category;
 use App\Models\Film;
 use Illuminate\Http\Request;
@@ -13,9 +14,9 @@ class FilmController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($slug=null)
+    public function index($slug = null)
     {
-     
+
 
         //le but depuis une categorie on cherche ma miste de c films
         //1 selection de la categorie// oops on a pas le id donc on doit cherché vec le slug
@@ -25,12 +26,12 @@ class FilmController extends Controller
         // une fois qu'on a recuperer la category on peut utiliser la methode films() creer dans le model Category
         // Category::where('slug',$slug)->first()->films()->get() 
         //elle retourne la liste des film de la categorie trouvé dans l'etape 1
-      $films= $slug  ? Category::where('slug',$slug)->first()->films()->get() : Film::all();
+        $films = $slug  ? Category::where('slug', $slug)->first()->films()->get() : Film::all();
 
 
- 
-        $categories=Category::all();
-        return view('index', compact('films','categories','slug'));
+
+        $categories = Category::all();
+        return view('index', compact('films', 'categories', 'slug'));
     }
 
     /**
@@ -40,8 +41,9 @@ class FilmController extends Controller
      */
     public function create()
     {
-        $categories=Category::all();
-        return view('create',compact('categories'));
+        $categories = Category::all();
+        $actors = Actor::all();
+        return view('create', compact('categories', "actors"));
     }
 
     /**
@@ -57,10 +59,12 @@ class FilmController extends Controller
             'year' => ['required', 'numeric', 'min:1950', 'max:' . date('Y')],
             'description' => ['required', 'string', 'max:500'],
         ]);
-       //dd($request->all());
-        Film::create($request->all());
+        //dd($request->all());
+        $film = Film::create($request->all());
+        //attach permet d'atacher le filme creer avec les actors selectioner dans le formulaire 
+        //attach accepte tjr un tableau de ids
+        $film->actors()->attach($request->actors);
         return redirect()->route('films.index')->with('info', 'Le film a bien été créé');
-
     }
 
     /**
@@ -71,6 +75,8 @@ class FilmController extends Controller
      */
     public function show(Film $film)
     {
+        // $actors=$film->actors()->get();
+        //$film->with('actors')->get();
 
         return view('show', compact('film'));
     }
@@ -83,7 +89,10 @@ class FilmController extends Controller
      */
     public function edit(Film $film)
     {
-        return view('edit',compact('film'));
+        $categories = Category::all();
+        $actors = Actor::all();
+
+        return view('edit', compact('film', 'categories', "actors"));
     }
 
     /**
@@ -100,8 +109,11 @@ class FilmController extends Controller
             'year' => ['required', 'numeric', 'min:1950', 'max:' . date('Y')],
             'description' => ['required', 'string', 'max:500'],
         ]);
-       
+
         $film->update($request->all());
+        // sync est lequivalent de detach puis attach
+        //voir detach dans destroy
+        $film->actors()->sync($request->actors);
         return redirect()->route('films.index')->with('info', 'Le film a bien été modifier');
     }
 
@@ -112,7 +124,9 @@ class FilmController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function destroy(Film $film)
-    {
+    {   
+        //detach() elle permet de suprimer dans la table associative les enregistrement relier au film selectioné
+        $film->actors()->detach();
         $film->delete();
         return back()->with('info', "le film a bien étét supprimé");
     }
